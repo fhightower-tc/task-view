@@ -15,6 +15,7 @@ var TASKUI = new Vue({
         newTaskDescription: "",
         newTaskAssignee: "",
         newTaskDueDate: "",
+        reassignTaskAssignee: ""
     },
     computed: {
         tc: function () {
@@ -185,6 +186,8 @@ var TASKUI = new Vue({
                     _this.currentUser = response.data.user;
                     // set the `newTaskAssignee` value to default to the current user
                     _this.newTaskAssignee = response.data.user.userName;
+                    // set the `reassignTaskAssignee` value to default to the current user
+                    _this.reassignTaskAssignee = response.data.user.userName;
                 })
                 .error(function(response) {
                     $.jGrowl('Unable to get the current user. See the console for more details.', {group: 'failure-growl'});
@@ -199,7 +202,7 @@ var TASKUI = new Vue({
                 .done(function(response) {
                     var nonApiUsers = [];
 
-                    for (var i = response.data.user.length - 1; i >= 0; i--) {
+                    for (var i = 0; i <= response.data.user.length - 1; i++) {
                         // this is used so that only non-api users are listed
                         if (response.data.user[i].userName.indexOf("@") !== -1) {
                             nonApiUsers.push(response.data.user[i]);
@@ -393,6 +396,78 @@ var TASKUI = new Vue({
             }
 
             tasks.commit();
+        },
+        reassignTask: function(taskName) {
+            /* Reassign a specific task. */
+            var _this = this;
+            var taskId;
+
+            // get the task's id
+            for (var i = _this.tasks.length - 1; i >= 0; i--) {
+                if (_this.tasks[i].name === taskName) {
+                    taskId = _this.tasks[i].id;
+                    // update the assignee for the task
+                    _this.tasks[i].assignee = [_this.reassignTaskAssignee];
+                    _this.tasks[i].selected = false;
+                    break;
+                }
+            }
+
+            if (taskId === undefined) {
+                console.log("Unable to find the id for the task named: ", taskName);
+                return;
+            }
+
+            _this.tc.tasks()
+                .owner(_this.tcSelectedOwner)
+                .name(taskName)
+                .id(taskId)
+                .assignee([{'userName': _this.reassignTaskAssignee}])
+                .escalatee([{}])
+                .done(function(response) {
+                    $.jGrowl('Task reassigned!', {group: 'success-growl'});
+
+                    // this is necessary to make sure the counts of the tasks are correct
+                    window.setTimeout(function() {
+                        $('#reassignTaskModalButton').prop('disabled', false);
+                        $('#reassignTaskModal').foundation('close');
+                        $('#myTasksButton').click();
+                        $('#allTasksButton').click();
+                        TASKUI.showAllTasks();
+                    }, 2000);
+                })
+                .error(function(response) {
+                    $('#reassignTaskModalButton').prop('disabled', false);
+                     $.jGrowl('Unable to reassign task: ' + response.error, {group: 'failure-growl'});
+                    console.error('error response', response);
+                })
+                .commit();
+        },
+        reassignTasks: function() {
+            /* Reassign the selected tasks. */
+            // get the selected tasks
+            var selectedTaskNames = this.getSelectedTaskNames();
+
+            if (selectedTaskNames.length === 0) {
+                $.jGrowl('Please select at least one task to reassign it', {group: 'failure-growl'});
+                return;
+            }
+
+            if (this.reassignTaskAssignee === '') {
+                $.jGrowl('Please select an assignee to whom the selected tasks will be assigned', {group: 'failure-growl'});
+                return;
+            }
+
+            // confirm that the user wants to complete the tasks
+            // var completeTasksConfirm = false;
+            // if (confirm("Are you sure you want to reassign " + selectedTaskNames.length + " tasks?") === true) {
+            //     completeTasksConfirm = true;
+            // }
+
+            for (var i = selectedTaskNames.length - 1; i >= 0; i--) {
+                this.reassignTask(selectedTaskNames[i]);
+                $('#reassignTaskModalButton').prop('disabled', true);
+            }
         },
         startApp: function() {
             // make the main app div visible (this prevents a flash of un-styled content)

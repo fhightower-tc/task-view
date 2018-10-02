@@ -44,8 +44,8 @@
 
         <div class="small-12 medium-7 large-6 float-center" id="app-content" v-if="visible">
             <div class="small-12 medium-11 large-11 row mobile-app-toggle" data-mobile-app-toggle>
-              <button id="allTasksButton" class="button is-active" v-on:click="showAllTasks"><b>All Tasks ({{ allTaskCount }})</b></button>
-              <button id="myTasksButton" class="button" v-on:click="showMyTasks"><b>My Tasks ({{ myTaskCount }})</b></button>
+              <button id="allTasksButton" class="button is-active" v-on:click="showAllTasks"><b>All tasks ({{ allTaskCount }})</b></button>
+              <button id="myTasksButton" class="button" v-on:click="showMyTasks"><b>My tasks ({{ myTaskCount }})</b></button>
             </div>
 
             <div class="small-12 medium-11 large-11 row task" v-for="task in tasks">
@@ -57,8 +57,9 @@
 
             <br>
             <div class="small-12 medium-11 large-11 row">
-                <button class="button secondary createTaskButton" v-on:click="completeTasks()"><i class="fa fa-check"></i>&nbsp;&nbsp;<b>Complete Task(s)</b></button>
-                <button class="button createTaskButton" data-open="createTaskModal"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<b>Create Task</b></button>
+                <button class="button secondary createTaskButton" v-on:click="completeTasks()"><i class="fa fa-check"></i>&nbsp;&nbsp;<b>Complete task(s)</b></button>
+                <button class="button secondary createTaskButton" data-open="reassignTaskModal"><i class="fa fa-exchange"></i>&nbsp;&nbsp;<b>Reassign task(s)</b></button>
+                <button class="button createTaskButton" data-open="createTaskModal"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<b>Create task</b></button>
             </div>
 
             <div class="reveal" id="createTaskModal" data-reveal>
@@ -74,7 +75,7 @@
                 </div>
                 <div class="mobile-app-message-bar message-input">
                     <div class="message-input">
-                      <label>Assigned To:
+                      <label>Assigned to:
                           <select id="select" v-model="newTaskAssignee">
                               <option value=""></option>
                               <option v-for="member in orgUsers" :value="member.userName">
@@ -86,13 +87,30 @@
                 </div>
                 <div class="mobile-app-message-bar message-input">
                     <div class="message-input">
-                        <label>Due Date:</label>
+                        <label>Due date:</label>
                         <input type="date" v-model="newTaskDueDate">
                     </div>
                 </div>
 
-                <button id="createTaskModalButton" class="button secondary float-right createTaskButton" v-on:click="createTask"><b>Create Task</b></button>
+                <button id="createTaskModalButton" class="button secondary float-right createTaskButton" v-on:click="createTask"><b>Create task</b></button>
             </div><!-- end createTaskModal -->
+
+            <div class="reveal" id="reassignTaskModal" data-reveal>
+                <div class="mobile-app-message-bar message-input">
+                    <div class="message-input">
+                      <label>Reassign to:
+                          <select id="select" v-model="reassignTaskAssignee">
+                              <option value=""></option>
+                              <option v-for="member in orgUsers" :value="member.userName">
+                                  {{ member.firstName |  }} {{ member.lastName }}
+                              </option>
+                          </select>
+                      </label>
+                    </div>
+                </div>
+
+                <button id="reassignTaskModalButton" class="button secondary float-right createTaskButton" v-on:click="reassignTasks"><b>Reassign task(s)</b></button>
+            </div><!-- end reassignTaskModal -->
         </div> <!-- end app-content -->
 
         <!-- This contains the credits for this app -->
