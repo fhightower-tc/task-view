@@ -1,0 +1,110 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Task View</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- ThreatConnect scripts -->
+        <script type="text/javascript" src="./js/tc/libs/core.js"></script>
+        <script type="text/javascript" src="./js/tc/libs/sha256.js"></script>
+        <script type="text/javascript" src="./js/tc/libs/hmac.js"></script>
+        <script type="text/javascript" src="./js/tc/libs/enc-base64.js"></script>
+
+        <script type="text/javascript" src="./js/tc/threatconnect.js"></script>
+
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+        <!-- jQuery growl -->
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.4.1/jquery.jgrowl.min.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.4.1/jquery.jgrowl.min.js"></script>
+
+        <!-- Zurb Foundation imports -->
+        <script src="https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css">
+
+        <!-- Vue.js -->
+        <script src="https://unpkg.com/vue"></script>
+
+        <!-- FontAwesome Icons CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+
+        <!-- Stylesheets -->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+        <link rel="stylesheet" href="styles/task-ui.css">
+    </head>
+    <body>
+        <!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+
+        <div class="small-12 medium-7 large-6 float-center" id="app-content" v-if="visible">
+            <div class="small-12 medium-11 large-11 row mobile-app-toggle" data-mobile-app-toggle>
+              <button id="allTasksButton" class="button is-active" v-on:click="showAllTasks"><b>All Tasks ({{ allTaskCount }})</b></button>
+              <button id="myTasksButton" class="button" v-on:click="showMyTasks"><b>My Tasks ({{ myTaskCount }})</b></button>
+            </div>
+
+            <div class="small-12 medium-11 large-11 row task" v-for="task in tasks">
+                <div v-if="task.visible">
+                    <input type="checkbox" v-model="task.selected" title="Click here to complete this task">
+                    <label class="taskLabel">&nbsp; <a :href="task.webLink" target="_blank" :title="task.description"><b>{{ task.name }}</b></a><span v-if="task.dueDate.indexOf('n/a') === -1"> - <span v-if="task.overdue" style="color: red;"><i>due on {{ task.dueDate.split("T")[0] }}</i></span><span v-if="!task.overdue"><i>due on {{ task.dueDate.split("T")[0] }}</i></span></span></label>
+                </div>
+            </div>
+
+            <br>
+            <div class="small-12 medium-11 large-11 row">
+                <button class="button secondary createTaskButton" v-on:click="completeTasks()"><i class="fa fa-check"></i>&nbsp;&nbsp;<b>Complete Task(s)</b></button>
+                <button class="button createTaskButton" data-open="createTaskModal"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<b>Create Task</b></button>
+            </div>
+
+            <div class="reveal" id="createTaskModal" data-reveal>
+                <div class="mobile-app-message-bar message-input">
+                    <div class="message-input">
+                        <label>Name:</label>
+                        <input id="taskNameInput" type="text" name="" value="" placeholder="Task title" required v-model="newTaskName">
+                    </div>
+                </div>
+                <div class="message-input">
+                    <label>Description:</label>
+                    <textArea rows=10 placeholder="Task description" v-model="newTaskDescription"></textArea>
+                </div>
+                <div class="mobile-app-message-bar message-input">
+                    <div class="message-input">
+                      <label>Assigned To:
+                          <select id="select" v-model="newTaskAssignee">
+                              <option value=""></option>
+                              <option v-for="member in orgUsers" :value="member.userName">
+                                  {{ member.firstName }} {{ member.lastName }}
+                              </option>
+                          </select>
+                      </label>
+                    </div>
+                </div>
+                <div class="mobile-app-message-bar message-input">
+                    <div class="message-input">
+                        <label>Due Date:</label>
+                        <input type="date" v-model="newTaskDueDate">
+                    </div>
+                </div>
+
+                <button id="createTaskModalButton" class="button secondary float-right createTaskButton" v-on:click="createTask"><b>Create Task</b></button>
+            </div><!-- end createTaskModal -->
+        </div> <!-- end app-content -->
+
+        <!-- App scripts here -->
+        <script src="js/taskUi.js"></script>
+
+        <script type="text/javascript">
+            // configure jgrowl to not show the [Close All] button when multiple growl messages are displayed
+            $.jGrowl.defaults.closer = false;
+
+            window.onload = function() {
+                TASKUI.startApp();
+            };
+        </script>
+    </body>
+</html>

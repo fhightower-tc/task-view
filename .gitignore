@@ -1,0 +1,9 @@
+# config files
+*.conf
+
+# Mac Garbage
+._*
+.DS*
+
+*.zip
+*.tcx

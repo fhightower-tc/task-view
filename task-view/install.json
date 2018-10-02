@@ -1,0 +1,32 @@
+{
+    "displayName": "TCS - Task View",
+    "programVersion": "1.2.1",
+    "programLanguage": "none",
+    "languageVersion": "JS",
+    "runtimeLevel": "SpaceOrganization",
+    "runtimeContext": [],
+    "allowOnDemand": true,
+    "programIcon": "spaces-icon-import",
+    "params": [{
+        "name": "owner",
+        "label": "The OWNER from which you would like to get tasks.",
+        "type": "MultiChoice",
+        "validValues": ["${OWNERS}"],
+        "required": true
+    },
+    {
+        "name": "taskStatusesToIgnore",
+        "label": "The statuses you would like to ignore.",
+        "type": "MultiChoice",
+        "validValues": ["Not Started", "In Progress", "Completed", "Waiting on Someone", "Deferred"],
+        "required": true,
+        "default": "Completed|Deferred"
+    },
+    {
+        "name": "appAnalyticsKeyName",
+        "label": "Key for the Analytics for this Particular App (PLEASE DON'T CHANGE THIS VALUE UNLESS YOU KNOW WHAT YOU'RE DOING)",
+        "type": "String",
+        "required": true,
+        "default": "task-ui"
+    }]
+}

@@ -1,0 +1,163 @@
+/*
+
+COLOR KEY
+
+  PRIMARY
+
+  #f26724 - TC Orange
+  #646469 - TC Dark Grey
+  #07213a - TC Blue
+
+
+  SECONDARY
+
+  #06213b - TC Dark Blue
+  #2878b7 - TC Light Blue
+  #cccbcb - TC Light Grey
+
+*/
+
+#app-content {
+  margin-top: 2em;
+}
+
+input:hover {
+  cursor: pointer;
+}
+
+.taskLabel a {
+  text-decoration: underline dotted;
+}
+
+/* Stylings for toggle buttons. */
+
+.mobile-app-toggle {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 1px solid #1779ba;
+  border-radius: 0.625rem;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.mobile-app-toggle .button {
+  background: transparent;
+  color: #1779ba;
+  margin-bottom: 0;
+  -webkit-flex: 1 0 0;
+      -ms-flex: 1 0 0px;
+          flex: 1 0 0;
+}
+
+.mobile-app-toggle .button:nth-child(n+1) {
+  border-left: 1px solid #1779ba;
+}
+
+.mobile-app-toggle .button.is-active {
+  background: #1779ba;
+  color: #fefefe;
+}
+
+/* End stylings for toggle buttons. */
+
+.createTaskButton {
+  /*background: #1779ba;*/
+  color: white;
+  -webkit-flex: 1 0 0;
+      -ms-flex: 1 0 0px;
+          flex: 1 0 0;
+  /*border: 1px solid #1779ba;*/
+  border-radius: 0.625rem;
+}
+
+.mobile-app-message-bar {
+  height: 5rem;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background: #fefefe;
+}
+
+.mobile-app-message-bar .message-input {
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+.mobile-app-message-bar .message-input input[type='text'] {
+  border-radius: 0.625rem;
+  margin: 0;
+}
+
+/* Stylings for creating vertical spaces. */
+.vspace-xs {
+    margin-top: 1%;
+}
+
+.vspace-sm {
+    margin-top: 2%;
+}
+
+.vspace-md {
+    margin-top: 3%;
+}
+
+.vspace-lg {
+    margin-top: 5%;
+}
+/* End stylings for creating vertical spaces. */
+
+/* Adding styling for growl messages. */
+.success-growl {
+    background-color: #58b957;
+    font-size: 1.5em;
+}
+
+.warning-growl {
+    background-color: #f2ae43;
+    font-size: 1.5em;
+    color: black;
+}
+
+.failure-growl {
+    background-color: #db524b;
+    font-size: 1.5em;
+}
+/* End stylings for growl messages. */
+
+/* Stylings for font families */
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+h3 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+h4 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+h5 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+h6 {
+    font-family: 'Montserrat', sans-serif;
+}
+/* End stylings for font families */
