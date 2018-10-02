@@ -51,7 +51,7 @@
             <div class="small-12 medium-11 large-11 row task" v-for="task in tasks">
                 <div v-if="task.visible">
                     <input type="checkbox" v-model="task.selected" title="Click here to complete this task">
-                    <label class="taskLabel">&nbsp; <a :href="task.webLink" target="_blank" :title="task.description"><b>{{ task.name }}</b></a><span v-if="task.dueDate.indexOf('n/a') === -1"> - <span v-if="task.overdue" style="color: red;"><i>due on {{ task.dueDate.split("T")[0] }}</i></span><span v-if="!task.overdue"><i>due on {{ task.dueDate.split("T")[0] }}</i></span></span></label>
+                    <label class="taskLabel">&nbsp; <a :href="task.webLink" target="_blank" :title="task.description"><b>{{ task.name }}</b></a><span v-if="task.dueDate.indexOf('n/a') === -1"> - <span v-if="task.overdue" style="color: red;"><i>due on {{ task.dueDate.split("T")[0] }}</i></span><span v-if="!task.overdue"><i>due on {{ task.dueDate.split("T")[0] }}</i></span></span><span v-if="task.assignee.indexOf(currentUser.userName) != -1">&nbsp; <i>(assigned to you)</i></span></label>
                 </div>
             </div>
 
